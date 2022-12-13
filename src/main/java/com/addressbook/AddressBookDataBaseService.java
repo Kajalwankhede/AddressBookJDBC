@@ -105,6 +105,9 @@ public class AddressBookDataBaseService {
         }
         return 0;
     }
-
+    public List<ContactDetails> getRecordsAddedInGivenDateRange(String date1, String date2) {
+        String query = String.format("SELECT * FROM addressbook WHERE dateAdded BETWEEN '%s' AND '%s';", date1, date2);
+        return this.getAddressBookDetails(query);
+    }
 }
 

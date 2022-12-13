@@ -29,8 +29,18 @@ public class AddressBookTest {
         Assert.assertEquals(true, result);
     }
     @Test
-    public void givenDateRangeForRecord_WhenRetrieved_ShouldReturnProperData() throws AddressBookException {
+    public void givenDateRangeForRecordWhenRetrievedShouldReturnProperData() throws AddressBookException {
         List<ContactDetails> recordDataInGivenDateRange = addressBookFunction.getRecordAddedInDateRange("2018-01-01","2019-11-30");
         assertEquals(0, recordDataInGivenDateRange.size());
+    }
+    @Test
+    public void givenCityWhenRetrievedShouldReturnProperDetails() throws AddressBookException {
+        List<ContactDetails> recordDataByCityState = addressBookFunction.getRecordsByCity("Pune");
+        assertEquals(1, recordDataByCityState.size());
+    }
+    @Test
+    public void givenStateWhenRetrievedShouldReturnProperDetails() throws AddressBookException {
+        List<ContactDetails> recordDataByCityState = addressBookFunction.getRecordsByState( "Maharashtra");
+        assertEquals(3, recordDataByCityState.size());
     }
 }

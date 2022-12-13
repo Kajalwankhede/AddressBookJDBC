@@ -49,5 +49,12 @@ public class AddressBookMain {
         List<ContactDetails> dataList = addressBookDataBaseService.getRecordsAddedInGivenDateRange(date1, date2);
         return dataList;
     }
-
+    public List<ContactDetails> getRecordsByCity(String City) {
+        List<ContactDetails> dataList = addressBookDataBaseService.getRecordsByCity(City);
+        return dataList;
+    }
+    public List<ContactDetails> getRecordsByState(String State) {
+        List<ContactDetails> dataList = addressBookDataBaseService.getRecordsByCityOrState(State);
+        return dataList;
+    }
 }

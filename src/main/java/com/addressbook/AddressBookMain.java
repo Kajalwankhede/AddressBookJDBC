@@ -23,4 +23,26 @@ public class AddressBookMain {
         dataList = addressBookDataBaseService.readData();
         return dataList;
     }
+    private ContactDetails getRecordDataByName(String FirstName) {
+        ContactDetails contactData = this.dataList.stream()
+                .filter(contact->contact.FirstName.equals(FirstName))
+                .findFirst()
+                .orElse(null);
+        return contactData;
+    }
+
+    public void updateRecord(String FirstName, String City) throws AddressBookException {
+        int result = addressBookDataBaseService.updateData(FirstName,City);
+        if(result == 0)
+            return;
+        ContactDetails contactData=this.getRecordDataByName(FirstName);
+        if (contactData!=null){
+            contactData.City=City;
+        }
+    }
+
+    public boolean checkAddressBookInSyncWithDB(String FirstName) {
+        List<ContactDetails> checkList = addressBookDataBaseService.getRecordDataByName(FirstName);
+        return checkList.get(0).equals(getRecordDataByName(FirstName));
+    }
 }

@@ -4,7 +4,8 @@ package com.addressbook;
 
         public enum ExceptionType
         {
-            UPDATE_ERROR
+            UPDATE_ERROR,
+            INSERTION_PROBLEM
         }
 
         public ExceptionType type;

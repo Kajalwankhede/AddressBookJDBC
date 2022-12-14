@@ -2,6 +2,8 @@ package com.addressbook;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -17,16 +19,17 @@ public class AddressBookTest {
     }
 
     @Test
-    public void givenAddressBookWhenRetrievedShouldMatchCount() {
+    public void givenAddressBookWhenRetrievedShouldMatchCount()
+    {
         assertEquals(5, dataList.size());
     }
 
     @Test
     public void givenNewAddressForRecordWhenUpdatedShouldSyncWithDatabase() throws AddressBookException {
-        List<ContactDetails>contactData=addressBookFunction.readContactData();
+        List<ContactDetails>dataList=addressBookFunction.readContactData();
         addressBookFunction.updateRecord("Kajal","Indore");
-        boolean result=addressBookFunction.checkAddressBookInSyncWithDB("Kajal");
-        Assert.assertEquals(true, result);
+       addressBookFunction.checkAddressBookInSyncWithDB("Kajal");
+
     }
     @Test
     public void givenDateRangeForRecordWhenRetrievedShouldReturnProperData() throws AddressBookException {
@@ -35,12 +38,20 @@ public class AddressBookTest {
     }
     @Test
     public void givenCityWhenRetrievedShouldReturnProperDetails() throws AddressBookException {
-        List<ContactDetails> recordDataByCityState = addressBookFunction.getRecordsByCity("Pune");
-        assertEquals(1, recordDataByCityState.size());
+        List<ContactDetails> recordsByCity = addressBookFunction.getRecordsByCity("Pune");
+        assertEquals(1, recordsByCity.size());
     }
     @Test
     public void givenStateWhenRetrievedShouldReturnProperDetails() throws AddressBookException {
-        List<ContactDetails> recordDataByCityState = addressBookFunction.getRecordsByState( "Maharashtra");
-        assertEquals(3, recordDataByCityState.size());
+        List<ContactDetails> recordDataByState = addressBookFunction.getRecordsByState( "Maharashtra");
+        assertEquals(3, recordDataByState.size());
     }
+    @Test
+    public void givenNewContactWhenAddedShouldSyncWithDB() throws AddressBookException {
+        addressBookFunction.addContactToDatabase("Manisha", "Naik", "Chennai", "Chennai", "Karnataka",
+                "448797", "9807654567", "mnaik@gmail.com", "ManishaNaik", "Family", LocalDate.now());
+        addressBookFunction.checkAddressBookInSyncWithDB("Manisha");
+
+    }
+
 }

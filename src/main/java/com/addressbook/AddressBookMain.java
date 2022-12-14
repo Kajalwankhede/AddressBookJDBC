@@ -1,7 +1,6 @@
 package com.addressbook;
-
+import java.time.LocalDate;
 import java.util.List;
-
 public class AddressBookMain {
     public List<ContactDetails> dataList;
     private AddressBookDataBaseService addressBookDataBaseService;
@@ -57,4 +56,10 @@ public class AddressBookMain {
         List<ContactDetails> dataList = addressBookDataBaseService.getRecordsByCityOrState(State);
         return dataList;
     }
+    public void addContactToDatabase(String FirstName, String LastName, String Address, String City, String State, String Zip,
+                                     String PhoneNumber, String Email, String NAME, String TYPE, LocalDate dateAdded)  throws AddressBookException{
+        dataList.add(addressBookDataBaseService.addNewContactToAddressBook(FirstName, LastName, Address, City, State, Zip,
+                PhoneNumber, Email, NAME, TYPE, dateAdded));
+    }
 }
+

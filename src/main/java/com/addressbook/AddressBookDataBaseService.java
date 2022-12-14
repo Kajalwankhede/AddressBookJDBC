@@ -1,7 +1,11 @@
 package com.addressbook;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.addressbook.AddressBookException.ExceptionType.INSERTION_PROBLEM;
+
 public class AddressBookDataBaseService {
     private static AddressBookDataBaseService addressBookDataBaseService;
     private PreparedStatement recordStatement;
@@ -117,5 +121,36 @@ public class AddressBookDataBaseService {
         String query = String.format("SELECT * FROM addressbook WHERE  State='%s';", State);
         return this.getAddressBookDetails(query);
     }
+    public ContactDetails addNewContactToAddressBook(String FirstName, String LastName, String Address, String City, String State, String Zip,
+                                                     String PhoneNumber, String Email, String NAME, String TYPE, LocalDate dateAdded) throws AddressBookException {
+        int contactId = -1;
+        Connection connection = null;
+        ContactDetails contactPerson = null;
+        try {
+            connection = this.getConnection();
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try (Statement statement = connection.createStatement()) {
+            String sqlQuery = String.format("INSERT INTO addressbook VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
+                    FirstName, LastName, Address, City, State, Zip,
+                    PhoneNumber, Email, NAME, TYPE, dateAdded);
+            int rowAffected = statement.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
+            if (rowAffected == 1) {
+                ResultSet resultSet = statement.getGeneratedKeys();
+                if (resultSet.next()) contactId = resultSet.getInt(1);
+            }
+            contactPerson = new ContactDetails(FirstName,LastName,Address,City,State,Zip,PhoneNumber,Email,dateAdded);
+            if (connection != null) {
+                connection.commit();
+            }
+        } catch (SQLException exception) {
+            throw new AddressBookException(INSERTION_PROBLEM, "Insertion Problem");
+        }
+        return contactPerson;
+    }
 }
+
+
 
